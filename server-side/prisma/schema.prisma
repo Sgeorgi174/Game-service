@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  title       String
+  description String
+
+  sessions Session[]
+
+  @@map("games")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  games  Game   @relation(fields: [gameId], references: [id])
+  gameId String @map("game_id")
+
+  settings Setting[]
+  teams    Team[]
+
+  @@index([gameId])
+  @@map("sessions")
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  duration     Int
+  scoreForWins Int
+  isDec        Boolean
+
+  sessions  Session @relation(fields: [sessionId], references: [id])
+  sessionId String  @map("session_id")
+
+  @@map("settings")
+}
+
+model Team {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  title  String
+  image  String?
+  points Int     @default(0)
+
+  sessions  Session @relation(fields: [sessionId], references: [id])
+  sessionId String  @map("session_id")
+
+  members Member[]
+
+  @@index([sessionId])
+  @@map("teams")
+}
+
+model Member {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name String
+
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId String @map("team_id")
+
+  @@map("members")
+}
