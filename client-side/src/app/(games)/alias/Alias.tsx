@@ -1,18 +1,21 @@
 "use client";
 
 import { useSession } from "@/app/hooks/useSession";
+import { AliasTitle } from "@/components/alias/alias-title";
+import { ControlBottomButton } from "@/components/alias/control-bottom-button";
+import { TeamList } from "@/components/alias/team-list";
 import { useGameStore } from "@/stores/game-store";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export const AliasPage = ({ className }: { className?: string }) => {
+export const AliasPage = () => {
+  const router = useRouter();
   const { selectedGameId } = useGameStore();
   const { isLoading, error, createSession, hasSession } = useSession();
 
   useEffect(() => {
     if (!isLoading && !hasSession && selectedGameId) {
-      createSession(selectedGameId).catch(() => {
-        // Ошибка уже обработана в хуке
-      });
+      createSession(selectedGameId);
     }
   }, [isLoading, hasSession, selectedGameId]);
 
@@ -21,11 +24,16 @@ export const AliasPage = ({ className }: { className?: string }) => {
   if (!hasSession) return <div>Подготовка к игре...</div>;
 
   return (
-    <div className={className}>
-      <h1 className="text-2xl font-bold">Игровая сессия</h1>
-      <div className="mt-4 space-y-2">
-        <p>ID игры: {selectedGameId}</p>
+    <div className="relative min-h-screen p-6 w-full flex flex-col ">
+      <div className="w-full flex flex-col items-center">
+        <AliasTitle title="Элиас" text="Создание или выбор команды" />
+        <TeamList />
       </div>
+      <ControlBottomButton
+        text="Продолжить"
+        route="/"
+        handleClick={() => router.push("/alias/setting")}
+      />
     </div>
   );
 };

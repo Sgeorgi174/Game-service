@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const nunito = Nunito({
+const inter = Inter({
   subsets: ["cyrillic"],
-  variable: "--font-nunito",
+  variable: "--font-inter",
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={nunito.className}>
+      <body className={inter.className}>
         <main className="min-h-screen bg-linear-to-r from-[#FDCBF1] to-[#E6DEE9]">
           {children}
         </main>

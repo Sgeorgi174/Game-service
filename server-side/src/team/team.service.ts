@@ -25,6 +25,7 @@ export class TeamService {
 
   async getBySessionId(req: Request) {
     const sessionId = getSessionId(req);
+
     return await this.prismaService.team.findFirst({ where: { sessionId } });
   }
 
