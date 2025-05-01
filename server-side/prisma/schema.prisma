@@ -26,7 +26,7 @@ model Session {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  games  Game   @relation(fields: [gameId], references: [id])
+  games  Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId String @map("game_id")
 
   settings Setting[]
@@ -45,7 +45,7 @@ model Setting {
   scoreForWins Int
   isDec        Boolean
 
-  sessions  Session @relation(fields: [sessionId], references: [id])
+  sessions  Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId String  @map("session_id")
 
   @@map("settings")
@@ -60,7 +60,7 @@ model Team {
   image  String?
   points Int     @default(0)
 
-  sessions  Session @relation(fields: [sessionId], references: [id])
+  sessions  Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId String  @map("session_id")
 
   members Member[]

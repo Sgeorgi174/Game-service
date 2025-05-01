@@ -6,7 +6,6 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { isDev } from 'src/utils/is-dev.utils';
 
 @Injectable()
 export class SessionService {
@@ -20,10 +19,9 @@ export class SessionService {
 
   private setCookie(res: Response, value: string) {
     res.cookie('sessionId', value, {
-      httpOnly: true,
-      domain: this.COOKIE_DOMAIN,
-      secure: !isDev(this.configService),
-      sameSite: isDev(this.configService) ? 'none' : 'lax',
+      httpOnly: false,
+      secure: false,
+      sameSite: 'lax',
       maxAge: 10 * 365 * 24 * 60 * 60 * 1000,
     });
   }
