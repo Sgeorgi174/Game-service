@@ -15,7 +15,6 @@ export class TeamService {
   async getById(id: string) {
     const team = await this.prismaService.team.findUnique({
       where: { id },
-      include: { members: true },
     });
 
     if (!team) throw new NotFoundException('Команда не найдена');

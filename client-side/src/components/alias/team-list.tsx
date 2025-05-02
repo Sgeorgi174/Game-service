@@ -9,12 +9,15 @@ interface Props {}
 
 export const TeamList: React.FC<Props> = ({}) => {
   const router = useRouter();
-  const { teams } = useSessionStore();
+  const { session } = useSessionStore();
+
   return (
     <div className="flex items-start justify-around gap-y-3 flex-wrap w-full mt-14">
-      <CreateTeamBox handleClick={() => router.push("/alias/team")} />
-      {teams &&
-        teams.map((team) => (
+      <CreateTeamBox
+        handleClick={() => router.push(`/${session?.gameId}/team`)}
+      />
+      {session?.teams &&
+        session?.teams.map((team) => (
           <TeamBox
             title={team.title}
             image={team.image ? team.image : "/alias/no-image.png"}

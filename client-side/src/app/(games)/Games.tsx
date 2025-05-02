@@ -1,19 +1,35 @@
+"use client";
+
 import { GameList } from "@/components/common/game-list";
 import { Input } from "@/components/ui/input";
-import { GamesApi } from "@/lib/api/games";
-import { Games } from "@/types/games.types";
-import React from "react";
+import { Game } from "@/lib/api/games";
+import { useGameStore } from "@/stores/game-store";
+import { useEffect } from "react";
 
-interface Props {
-  className?: string;
-}
+export const GamesPage = ({ initialGames }: { initialGames: Game[] }) => {
+  const {
+    isLoading,
+    error,
+    searchQuery,
+    setSearchQuery,
+    getFilteredGames,
+    setGames,
+    fetchGames,
+  } = useGameStore();
 
-export const GamesPage: React.FC<Props> = async () => {
-  const games: Games[] = await GamesApi.getAll();
+  // Initialize store with server data
+  useEffect(() => {
+    if (initialGames.length > 0) {
+      setGames(initialGames);
+    } else {
+      fetchGames();
+    }
+  }, [initialGames, setGames, fetchGames]);
 
-  {
-    games.length === 0 && <div>Игр не найдено</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const filteredGames = getFilteredGames();
 
   return (
     <div className="flex flex-col items-center p-6">
@@ -24,10 +40,16 @@ export const GamesPage: React.FC<Props> = async () => {
       <Input
         type="text"
         placeholder="Поиск по играм"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
         className="py-3 px-3 border-[#5b21b6a1] rounded-2xl bg-white w-[300px] mt-4"
       />
 
-      <GameList games={games} />
+      {filteredGames.length === 0 ? (
+        <div className="mt-4">Игр не найдено</div>
+      ) : (
+        <GameList games={filteredGames} />
+      )}
     </div>
   );
 };

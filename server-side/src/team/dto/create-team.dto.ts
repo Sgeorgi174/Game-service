@@ -1,5 +1,4 @@
 import {
-  IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -21,8 +20,4 @@ export class CreateTeamDto {
   @IsPositive({ message: 'Должно быть положительным числом' })
   @Min(0, { message: 'Минимальное значение: 0' })
   points?: number;
-
-  @IsOptional()
-  @IsArray({ message: 'Участники должны приходить массивом' })
-  members?: object[];
 }

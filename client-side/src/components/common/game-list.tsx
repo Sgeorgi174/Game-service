@@ -35,7 +35,7 @@ export const GameList: React.FC<GameListProps> = ({ games }) => {
               <div className="flex justify-between mt-4">
                 <ButtonForGames
                   text="Играть"
-                  route="alias"
+                  route={`${selectedGameId}`}
                   onClick={() => setSelectedGame(item.id)}
                 />
                 <ButtonForGames text="Правила" />

@@ -6,7 +6,6 @@ import { GameService } from './game/game.service';
 import { GameModule } from './game/game.module';
 import { SettingModule } from './setting/setting.module';
 import { TeamModule } from './team/team.module';
-import { MemberModule } from './member/member.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SessionModule } from './session/session.module';
 
@@ -18,7 +17,6 @@ import { SessionModule } from './session/session.module';
     GameModule,
     SettingModule,
     TeamModule,
-    MemberModule,
     PrismaModule,
     SessionModule,
   ],
